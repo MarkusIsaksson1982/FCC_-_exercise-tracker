@@ -17,7 +17,6 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true
 });
 
-// Define Mongoose Schemas and Models
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
 });
@@ -32,14 +31,10 @@ const exerciseSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 const Exercise = mongoose.model('Exercise', exerciseSchema);
 
-// Routes
-
-// Home Route
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-// POST /api/users - Create new user
 app.post('/api/users', async (req, res) => {
   try {
     const { username } = req.body;
@@ -50,7 +45,6 @@ app.post('/api/users', async (req, res) => {
   }
 });
 
-// GET /api/users - Get all users
 app.get('/api/users', async (req, res) => {
   try {
     const users = await User.find({}, 'username _id');
@@ -60,7 +54,6 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-// POST /api/users/:_id/exercises - Add exercises
 app.post('/api/users/:_id/exercises', async (req, res) => {
   const { _id } = req.params;
   const { description, duration, date } = req.body;
@@ -90,7 +83,6 @@ app.post('/api/users/:_id/exercises', async (req, res) => {
   }
 });
 
-// GET /api/users/:_id/logs - Get exercise logs
 app.get('/api/users/:_id/logs', async (req, res) => {
   const { _id } = req.params;
   const { from, to, limit } = req.query;
